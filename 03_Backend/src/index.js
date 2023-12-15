@@ -8,7 +8,19 @@ dotenv.config({
 
 // Approach_2: Import DB Connectoin from 'db' for better readability 
 import connectDB from "./db/index.js";
+import {app} from "./app.js"
+
 connectDB()
+.then(() => {
+    app.on("error", (error)=>{
+        console.error("MongoDB Connection Error: ", error)
+        throw error
+    })
+    app.listen(process.env.PORT || 8000, ()=>{
+        console.log(`Server started on port ${process.env.PORT||8000}`);
+    })
+})
+.catch((err) => console.error(err));
 
 // Approach_1: Entire DB Connection codebase in Index file.
 /*
